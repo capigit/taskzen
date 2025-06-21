@@ -29,7 +29,7 @@ export default function TaskList({ tasks, setTasks }) {
   };
 
   const clearAll = () => {
-    if (window.confirm('Voulez-vous vraiment tout effacer ?')) {
+    if (window.confirm('Voulez-vous --- vraiment tout effacer ?')) {
       setTasks([]);
     }
   };

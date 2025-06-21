@@ -46,7 +46,7 @@ function TaskApp() {
         <input
           className="border rounded px-3 py-2 flex-grow"
           type="text"
-          placeholder="Nouvelle tâche"
+          placeholder="Nouvelle-tâche"
           value={input}
           onChange={e => setInput(e.target.value)}
         />
