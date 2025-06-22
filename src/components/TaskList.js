@@ -1,113 +1,72 @@
-import React from 'react';
-import { CheckCircle, Trash2, Check, Pencil } from 'lucide-react';
+import React, { useState } from 'react';
+import { Trash2, CheckCircle } from 'lucide-react';
 
-export default function TaskList({ tasks, setTasks }) {
-  const toggleDone = (id) => {
-    setTasks(tasks.map(t => (t.id === id ? { ...t, done: !t.done } : t)));
+function TaskList({ tasks, updateTask, deleteTask }) {
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState('');
+
+  const handleEdit = (task) => {
+    setEditingId(task.id);
+    setEditText(task.text);
   };
 
-  const removeTask = (id) => {
-    setTasks(tasks.filter(t => t.id !== id));
-  };
-
-  const toggleEditing = (id) => {
-    setTasks(tasks.map(t =>
-      t.id === id ? { ...t, isEditing: !t.isEditing } : { ...t, isEditing: false }
-    ));
-  };
-
-  const updateTaskText = (id, newText) => {
-    setTasks(tasks.map(t =>
-      t.id === id ? { ...t, text: newText } : t
-    ));
-  };
-
-  const validateEdit = (id) => {
-    setTasks(tasks.map(t =>
-      t.id === id ? { ...t, isEditing: false } : t
-    ));
-  };
-
-  const clearAll = () => {
-    if (window.confirm('Voulez-vous --- vraiment tout effacer ?')) {
-      setTasks([]);
+  const handleSave = (task) => {
+    if (editText.trim()) {
+      updateTask(task.id, { text: editText.trim() });
     }
+    setEditingId(null);
+    setEditText('');
   };
 
   return (
-    <>
-      <ul>
-        {tasks.map(task => (
-          <li
-            key={task.id}
-            className="border-b py-2 flex justify-between items-center"
-          >
-            <div className="flex items-center gap-2 flex-1">
-              <button
-                onClick={() => toggleDone(task.id)}
-                className={`text-green-600 hover:text-green-800 ${
-                  task.done ? 'opacity-50' : ''
-                }`}
-                title="Marquer comme terminé"
-              >
-                <CheckCircle size={20} />
-              </button>
-
-              {task.isEditing ? (
-                <input
-                  type="text"
-                  value={task.text}
-                  onChange={e => updateTaskText(task.id, e.target.value)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter') validateEdit(task.id);
-                  }}
-                  className="border px-2 py-1 rounded w-full"
-                  autoFocus
-                />
-              ) : (
-                <span
-                  className={`cursor-pointer ${
-                    task.done ? 'line-through text-gray-400' : ''
-                  }`}
-                  onClick={() => toggleEditing(task.id)}
-                  title="Cliquer pour modifier"
-                >
-                  {task.text}
-                </span>
-              )}
-
-              {task.isEditing && (
-                <button
-                  onClick={() => validateEdit(task.id)}
-                  className="text-blue-600 hover:text-blue-800"
-                  title="Valider"
-                >
-                  <Check size={18} />
-                </button>
-              )}
-            </div>
-
+    <ul>
+      {tasks.map(task => (
+        <li
+          key={task.id}
+          className="border-b py-2 flex justify-between items-center"
+        >
+          <div className="flex items-center gap-2 flex-1">
             <button
-              className="text-red-500 hover:text-red-700"
-              onClick={() => removeTask(task.id)}
-              title="Supprimer"
+              onClick={() => updateTask(task.id, { done: !task.done })}
+              className={`text-green-600 hover:text-green-800 ${task.done ? 'opacity-50' : ''}`}
+              title="Marquer comme terminé"
             >
-              <Trash2 size={20} />
+              <CheckCircle size={20} />
             </button>
-          </li>
-        ))}
-      </ul>
 
-      {tasks.length > 0 && (
-        <div className="flex justify-end mb-4">
+            {editingId === task.id ? (
+              <input
+                className="flex-1 border px-2 py-1 rounded"
+                value={editText}
+                onChange={e => setEditText(e.target.value)}
+                onBlur={() => handleSave(task)}
+                onKeyDown={e => {
+                  if (e.key === 'Enter') handleSave(task);
+                  if (e.key === 'Escape') setEditingId(null);
+                }}
+                autoFocus
+              />
+            ) : (
+              <span
+                className={`cursor-pointer ${task.done ? 'line-through text-gray-400' : ''}`}
+                onDoubleClick={() => handleEdit(task)}
+              >
+                {task.text}
+              </span>
+            )}
+          </div>
+
           <button
-            className="text-sm text-red-600 hover:text-red-800 underline"
-            onClick={clearAll}
+            className="text-red-500 hover:text-red-700"
+            onClick={() => deleteTask(task.id)}
+            title="Supprimer"
           >
-            Effacer toutes les tâches
+            <Trash2 size={20} />
           </button>
-        </div>
-      )}
-    </>
+        </li>
+      ))}
+    </ul>
   );
 }
+
+export default TaskList;
