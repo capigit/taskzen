@@ -1,50 +1,44 @@
 const express = require('express');
 const cors = require('cors');
+const db = require('./db');
+
 const app = express();
 const PORT = 3001;
 
 app.use(cors());
 app.use(express.json());
 
-// Mémoire temporaire
-let tasks = [];
-
-// GET - toutes les tâches
+// Lecture de toutes les tâches
 app.get('/tasks', (req, res) => {
+  const tasks = db.prepare('SELECT * FROM tasks').all();
   res.json(tasks);
 });
 
-// POST - ajouter une tâche
+// Ajouter une tâche
 app.post('/tasks', (req, res) => {
-  const newTask = {
-    id: Date.now(),
-    text: req.body.text || '',
-    done: false,
-  };
-  tasks.push(newTask);
+  const { text } = req.body;
+  const stmt = db.prepare('INSERT INTO tasks (text) VALUES (?)');
+  const result = stmt.run(text);
+  const newTask = db.prepare('SELECT * FROM tasks WHERE id = ?').get(result.lastInsertRowid);
   res.status(201).json(newTask);
 });
 
-// PUT - modifier une tâche
+// Modifier une tâche
 app.put('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = tasks.findIndex(t => t.id === id);
-
-  if (index !== -1) {
-    tasks[index] = { ...tasks[index], ...req.body };
-    res.json(tasks[index]);
-  } else {
-    res.status(404).json({ message: 'Tâche non trouvée' });
-  }
+  const { id } = req.params;
+  const { text, done } = req.body;
+  db.prepare('UPDATE tasks SET text = ?, done = ? WHERE id = ?').run(text, done ? 1 : 0, id);
+  const updated = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+  res.json(updated);
 });
 
-// DELETE - supprimer une tâche
+// Supprimer une tâche
 app.delete('/tasks/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  tasks = tasks.filter(t => t.id !== id);
+  const { id } = req.params;
+  db.prepare('DELETE FROM tasks WHERE id = ?').run(id);
   res.status(204).end();
 });
 
 app.listen(PORT, () => {
-  console.log(`API Express en cours sur http://localhost:${PORT}`);
+  console.log(`✅ Backend avec SQLite sur http://localhost:${PORT}`);
 });
