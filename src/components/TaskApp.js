@@ -9,7 +9,7 @@ function TaskApp() {
   const [input, setInput] = useState('');
   const [filter, setFilter] = useState('all');
 
-  // 🔁 Charger les tâches depuis l'API
+  // Charger les tâches depuis l'API
   useEffect(() => {
     fetch(API_URL)
       .then(res => res.json())
@@ -17,7 +17,7 @@ function TaskApp() {
       .catch(err => console.error('Erreur chargement tâches:', err));
   }, []);
 
-  // ➕ Ajouter une tâche via POST
+  // Ajouter une tâche via POST
   const handleAddTask = async () => {
     if (input.trim() === '') return;
     const newTask = { text: input.trim() };
@@ -31,13 +31,13 @@ function TaskApp() {
     setInput('');
   };
 
-  // ✅ Filtrage
+  // Filtrage
   const filteredTasks = tasks.filter(task =>
     filter === 'active' ? !task.done :
     filter === 'done' ? task.done : true
   );
 
-  // 🔁 Mettre à jour une tâche
+  // Mettre à jour une tâche
   const updateTask = async (id, updates) => {
     const res = await fetch(`${API_URL}/${id}`, {
       method: 'PUT',
@@ -48,7 +48,7 @@ function TaskApp() {
     setTasks(prev => prev.map(t => t.id === id ? updated : t));
   };
 
-  // ❌ Supprimer une tâche
+  // Supprimer une tâche
   const deleteTask = async id => {
     await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
     setTasks(prev => prev.filter(t => t.id !== id));

@@ -42,6 +42,3 @@ app.delete('/tasks/:id', (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Backend avec SQLite sur http://localhost:${PORT}`);
 });
-
-const cors = require('cors');
-app.use(cors());
