@@ -1,4 +1,3 @@
-// src/components/TaskInput.js
 import React from 'react';
 import { PlusCircle } from 'lucide-react';
 

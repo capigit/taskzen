@@ -1,4 +1,3 @@
-// src/components/TaskFilters.js
 import React from 'react';
 
 export default function TaskFilters({ filter, setFilter }) {
