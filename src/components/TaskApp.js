@@ -56,7 +56,7 @@ function TaskApp() {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded shadow p-6">
-      {/* ... même UI, mêmes boutons ... */}
+      {}
 
       <TaskList
         tasks={filteredTasks}

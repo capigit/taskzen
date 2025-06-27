@@ -5,7 +5,7 @@ import TaskList from './components/TaskList';
 function TaskApp() {
   const [tasks, setTasks] = useState([]);
   const [input, setInput] = useState('');
-  const [filter, setFilter] = useState('all'); // 'all' | 'active' | 'done'
+  const [filter, setFilter] = useState('all');
 
   // Charger les tâches depuis le localStorage
   useEffect(() => {
