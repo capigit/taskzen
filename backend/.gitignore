@@ -1,3 +1,11 @@
+# Dépendances Node
 node_modules/
+
+# Base de données SQLite
+tasks.db
+
+# Environnement
 .env
+
+# Logs
 *.log

@@ -1,25 +1,14 @@
-# React
-node_modules/
-dist/
-build/
-.env.local
-.env.*.local
 .DS_Store
+Thumbs.db
 
-# Logs
+# Node modules à la racine
+node_modules/
+
+# Logs globaux
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Editor
-.vscode/
-.idea/
-
-# System
-Thumbs.db
-
-# Express backend
-backend/node_modules/
-backend/*.log
-backend/.env
-backend/tasks.db
+# Environnement local
+.env
