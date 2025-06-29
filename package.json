@@ -1,0 +1,24 @@
+{
+  "name": "taskzen",
+  "version": "1.0.0",
+  "description": "TaskZen est une application simple de gestion de tâches développée avec React et Tailwind CSS. Elle permet d’ajouter, filtrer, marquer comme terminées et supprimer des tâches.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capigit/taskzen.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/capigit/taskzen/issues"
+  },
+  "homepage": "https://github.com/capigit/taskzen#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
