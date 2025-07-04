@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend start\"",
-    "build": "npm --prefix frontend run build && cp -r frontend/build backend/public",
+    "build": "npm --prefix frontend run build && rm -rf backend/public && cp -r frontend/build backend/public",
+    "start": "node backend/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
