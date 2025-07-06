@@ -1,14 +1,14 @@
 const express = require('express');
-const path = require('path');
+const cors = require('cors');
+const tasksRoutes = require('./routes/tasks');
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors());
+app.use(express.json());
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.use('/api/tasks', tasksRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Serveur lancé sur http://localhost:${PORT}`);
+  console.log(`Serveur backend lancé sur http://localhost:${PORT}`);
 });

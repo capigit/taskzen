@@ -1,13 +1,20 @@
-const Database = require('better-sqlite3');
-const db = new Database('tasks.db');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
-// Création de la table
-db.prepare(`
+const db = new sqlite3.Database(path.join(__dirname, 'tasks.db'), (err) => {
+  if (err) {
+    console.error('Erreur lors de la connexion à SQLite:', err.message);
+  } else {
+    console.log('Connecté à la base de données SQLite.');
+  }
+});
+
+db.run(`
   CREATE TABLE IF NOT EXISTS tasks (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     text TEXT NOT NULL,
-    done INTEGER DEFAULT 0
+    done INTEGER NOT NULL DEFAULT 0
   )
-`).run();
+`);
 
 module.exports = db;
